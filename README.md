@@ -14,9 +14,9 @@ You might be requested to install a few packages if not present on your machine.
 
     ipython
 
-   request
+    request
 
-   dotenv
+    dotenv
 
 
 Solution :
