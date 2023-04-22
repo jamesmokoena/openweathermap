@@ -1,4 +1,4 @@
-# Pepper_Potts_Assessment
+# OPENWEATHERMAP
 
 This  is  a command line application displays the weather details for a given city.
 
