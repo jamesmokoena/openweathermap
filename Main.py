@@ -88,6 +88,8 @@ def app():
 
     while json_data['cod'] == '404':
         city = get_city()
+        
+
 
         
 
