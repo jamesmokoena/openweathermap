@@ -13,16 +13,28 @@ load_dotenv()
 API_KEY = os.getenv('api_key')
 
 
+def get_api_key():
+    api_key = input("Enter your API key >>> ")
+    return api_key
+
+
+
+def save_api_key(api_key):
+    with open(".env", "w") as f:
+        f.write(f"AP_KEY= {api_key}")
+    
+
+
 
 def path_():
     path = "./Cities"
     return path
 
-def get_city():
+def get_city(api_key):
     city = ""
     while True:
         city = input("What is the name of your city? >>> ")
-        json_data = api_request(city)
+        json_data = api_request(api_key,city)
 
         if json_data['cod'] == '404':
             print("Invalid city, please try again\n")
@@ -35,8 +47,8 @@ def get_city():
 
 
 
-def api_request(city):
-    link = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid='+API_KEY
+def api_request(api_key,city):
+    link = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid='+api_key
     json_data = requests.get(link).json()
 
     return json_data    
@@ -63,8 +75,8 @@ def convert_city_to_coordinates(city):
 
 
 
-def latest_weather(lat,lon):
-    link = f"https://pro.openweathermap.org/data/2.5/forecast/hourly?lat={lat}&lon={lon}&appid={API_key}"
+def latest_weather(api_key,lat,lon):
+    link = f"https://pro.openweathermap.org/data/2.5/forecast/hourly?lat={lat}&lon={lon}&appid={api_key}"
     json_data = requests.get(link).json()
     hourly_data = {"Temp": json_data[0]["main"]["temp"], "Description": json_data[0]["weather"],"Time": json_data[0]["dt_txt"]}
     return hourly_data
@@ -93,8 +105,12 @@ def old_file(file_name):
 
 def app():
     
-    city = get_city() 
-    json_data= api_request(city)
+    api_key = get_api_key()
+
+    save_api_key(api_key)
+
+    city = get_city(api_key) 
+    json_data= api_request(api_key,city)
 
     weather, temp= forecast(json_data)
     lat,lon = convert_city_to_coordinates(city)
@@ -104,9 +120,9 @@ def app():
             
 
     if old_file(file):
-        city = get_city() 
+        city = get_city(api_key) 
         lat,lon = convert_city_to_coordinates(city)
-        new_forecast = latest_weather(lat,lon)
+        new_forecast = latest_weather(api_key,lat,lon)
     
 
         new_weather = pd.DataFrame(new_forecast['weather'],index=[0])
