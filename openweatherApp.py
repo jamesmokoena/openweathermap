@@ -10,7 +10,8 @@ import pandas as pd
 load_dotenv()
 
 
-API_KEY = os.getenv('API_KEY')
+API_KEY = os.getenv('api_key')
+
 
 
 def path_():
@@ -18,8 +19,18 @@ def path_():
     return path
 
 def get_city():
-    City = input("What is the name of your city? >>> ")
-    return City
+    city = ""
+    while True:
+        city = input("What is the name of your city? >>> ")
+        json_data = api_request(city)
+
+        if json_data['cod'] == '404':
+            print("Invalid city, please try again\n")
+            continue
+        else:
+            break
+
+    return city
 
 
 
@@ -79,32 +90,24 @@ def old_file(file_name):
    
 
 
+
 def app():
     
     city = get_city() 
-
-    
     json_data= api_request(city)
-
-    while json_data['cod'] == '404':
-        city = get_city()
-        
-
-
-        
 
     weather, temp= forecast(json_data)
     lat,lon = convert_city_to_coordinates(city)
     
     file = create_file(city,json_data,lat,lon)
-        
-        
+            
+            
 
     if old_file(file):
         city = get_city() 
         lat,lon = convert_city_to_coordinates(city)
         new_forecast = latest_weather(lat,lon)
-       
+    
 
         new_weather = pd.DataFrame(new_forecast['weather'],index=[0])
         new_temp =  pd.DataFrame(new_forecast['main'],index=[1])
@@ -113,7 +116,7 @@ def app():
         print(new_weather)
         print("______________________________________________________")
         print(new_temp)
-       
+    
     
     weather = pd.DataFrame(json_data['weather'],index=[0])
     temp =  pd.DataFrame(json_data['main'],index=[1])
