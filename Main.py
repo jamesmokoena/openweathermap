@@ -4,11 +4,7 @@ from geopy.geocoders import Nominatim
 import os
 from dotenv import load_dotenv
 import os, time
-from os.path import exists
 import pandas as pd
-from IPython import display  
-import datetime
-from os import path
 
 
 load_dotenv()
