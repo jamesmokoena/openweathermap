@@ -128,17 +128,17 @@ def app():
         new_weather = pd.DataFrame(new_forecast['weather'],index=[0])
         new_temp =  pd.DataFrame(new_forecast['main'],index=[1])
 
-        print("______________________________________________________")
+        print("______________________________________________________\n")
         print(new_weather)
-        print("______________________________________________________")
+        print("______________________________________________________\n")
         print(new_temp)
     
     
     weather = pd.DataFrame(json_data['weather'],index=[0])
     temp =  pd.DataFrame(json_data['main'],index=[1])
-    print("______________________________________________________")
+    print("______________________________________________________\n")
     print(weather)
-    print("______________________________________________________")
+    print("______________________________________________________\n")
     print(temp)    
 
 
